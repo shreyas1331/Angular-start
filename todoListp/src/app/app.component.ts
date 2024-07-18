@@ -1,35 +1,46 @@
-import { Component } from '@angular/core';
-import {Todo} from "./todo";
+import { Component, OnInit } from '@angular/core';
+import { Todo } from './todo';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'todoList';
+  localSetItem: string | null;
+  list: Todo[];
+  todoValue: string;
 
-  todoValue:string;
-  list:Todo[];
-  
-  ngOnInit(){
-    this.list=[];
-    this.todoValue="";
+  constructor() { 
+    this.localSetItem = localStorage.getItem('list');
+    if (this.localSetItem === null) {
+      this.list = [];
+    } else {
+      this.list = JSON.parse(this.localSetItem);
+    }
+    this.todoValue = '';
+  }
+          
+  ngOnInit(): void {
+    // Initialization if necessary, but list and todoValue are already set in the constructor
   }
 
-  addItem(){
-    if(this.todoValue!==""){
-      const newItem: Todo={
-        id:Date.now(),
-        value:this.todoValue,
-        isDone:false
+  addItem(): void {
+    if (this.todoValue.trim() !== '') {
+      const newItem: Todo = {
+        id: Date.now(),
+        value: this.todoValue,
+        isDone: false
       };
       this.list.push(newItem);
+      localStorage.setItem('list', JSON.stringify(this.list));
+      this.todoValue = '';
     }
-    this.todoValue="";
   }
 
-  deleteItem(id:number){
-    this.list=this.list.filter(item =>item.id!==id);
+  deleteItem(id: number): void {
+    this.list = this.list.filter(item => item.id !== id);
+    localStorage.setItem('list', JSON.stringify(this.list));
   }
 }

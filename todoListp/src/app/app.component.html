@@ -6,7 +6,7 @@
   height="50"
   class="logo"
   />
-  <h1 class="app-title">LCO Todo list</h1>
+  <h1 class="app-title">Shreyas Todo List</h1>
 </div>
 <div class="container">
   Add a todo...
@@ -19,6 +19,9 @@
   (keyup.enter)="addItem()"
   />
   <button class="add-btn" (click)="addItem()">Add Todo</button>
+  <!-- <h3>Write your Todo</h3> -->
+  <div *ngIf="this.list.length===0; else elseBlock">No Todos to Display</div>
+<ng-template #elseBlock>
   <div class="list">
     <ul>
       <li *ngFor="let item of list">
@@ -30,4 +33,5 @@
       </li>
     </ul>
   </div>
+</ng-template>
 </div>
